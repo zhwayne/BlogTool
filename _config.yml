@@ -71,6 +71,6 @@ theme: jacman
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:zhwayne/tecblog.git
+  repo: git@github.com:zhwayne/blog.git
   branch: gh-pages
 
