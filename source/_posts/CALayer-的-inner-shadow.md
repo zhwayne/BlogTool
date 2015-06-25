@@ -214,6 +214,6 @@ shadowLayer.innerShadowRadius  = 16
 
 完整工程示例：⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇ （若无法显示请刷新或者点击[这里](http://github.com/zhwayne/InnerShadowLayer)）
 
-<script src="http://www.oschina.net/js/2012/jquery-1.7.1.min.js"></script>
-<script src="http://www.oschina.net/js/jquery/jquery.githubRepoWidget.js"></script>
-<div class="github-widget seccom" data-repo="zhwayne/InnerShadowLayer"></div>
+<div class="github-widget" data-repo="zhwayne/InnerShadowLayer"></div>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.githubRepoWidget.min.js"></script>
