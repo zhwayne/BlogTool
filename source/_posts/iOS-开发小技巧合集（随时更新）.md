@@ -1,4 +1,4 @@
-title: iOS-开发小技巧合集（不定期更新）
+title: iOS-开发小技巧合集（随时更新）
 date: 2015-06-23 19:18:31
 toc: true
 categories:
