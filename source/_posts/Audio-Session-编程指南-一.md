@@ -137,57 +137,52 @@ APP 的音频共存行为先说到这里，本文并不作为官方文档的中�
 
 ![](/{{path}}1.png)
 
-出现这个提示后，录音过程会被暂时阻塞，直到用户确认授权。如果点击了不允许，以后只能在设置里重新手动授权。这样的用户体验差的没话说，用户没有一点心里准备，你应该在授权之前告知用户授权的目的，很显然我们不能修改系统的这个提示框。我们需要自己掌控系统何时会弹出这个授权提示框，用`requestRecordPermission:`方法可以帮我们实现，这里有一个很简单的 Demo。
+出现这个提示后，录音会被暂时阻塞，直到用户确认授权。如果点击了不允许，以后只能在设置里重新手动授权。这样用户没有一点心里准备，你应该在授权之前告知用户授权的目的。很显然我们不能修改系统的这个提示框，我们需要自己掌控系统何时会弹出这个授权提示框，用`requestRecordPermission:`方法可以帮我们实现，这里有一个很简单的 Demo。
 
 ``` objc
 #import "ViewController.h"
 #import <AVFoundation/AVFoundation.h>
 
-NSString * const Demo1AVAudioSessionDidRequestedRecordPermissionNotification = @"Demo1AVAudioSessionDidRequestedRecordPermissionNotification";
+@protocol AVAudioSessionRequestRecordPermissionDelegate <NSObject>
 
-@interface ViewController () <UIAlertViewDelegate>
+@required
+- (void)didRequestedRecordPermission:(BOOL)result;
+
+@end
+
+@interface ViewController ()
+<
+UIAlertViewDelegate,
+AVAudioSessionRequestRecordPermissionDelegate
+>
 
 @property (nonatomic, strong) AVAudioRecorder *recorder;
+@property (nonatomic, weak) id<AVAudioSessionRequestRecordPermissionDelegate> permissionDelegate;
 
 @end
 
 @implementation ViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.permissionDelegate = self;
+    
     @try {
-        [self configAudioSession:[AVAudioSession sharedInstance]];
+        [self configAudioSession];
         [self requestRecordPermission];
-        
-        [[NSNotificationCenter defaultCenter]
-         addObserverForName:Demo1AVAudioSessionDidRequestedRecordPermissionNotification
-                     object:nil
-                      queue:[NSOperationQueue mainQueue]
-                 usingBlock:^(NSNotification *note) {
-                    if ([[note.userInfo objectForKey:@"Granted"] boolValue]) {
-                        // Granted
-                        [self startRecord];
-                    }
-                    else {
-                        // Denied
-                        UIAlertView *a = [[UIAlertView alloc] initWithTitle:nil
-                                                                    message:@"没有录音权限，去设置里开启。"
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"取消"
-                                                          otherButtonTitles: nil, nil];
-                        [a show];
-                    }}];
     }
     @catch (NSException *exception) {
         NSLog(@"%@", exception.name);
     }
 }
 
-- (void)configAudioSession:(AVAudioSession *)session
+- (void)configAudioSession
 {
     NSError *error = nil;
-    [session setActive:YES error:&error];
+    [[AVAudioSession sharedInstance] setActive:YES
+                                         error:&error];
     if (error) {
         @throw [NSException exceptionWithName:@"Active error"
                                        reason:error.description
@@ -195,7 +190,8 @@ NSString * const Demo1AVAudioSessionDidRequestedRecordPermissionNotification = @
     }
     
     error = nil;
-    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord
+                                           error:&error];
     if (error) {
         @throw [NSException exceptionWithName:@"Category error"
                                        reason:error.description
@@ -205,12 +201,32 @@ NSString * const Demo1AVAudioSessionDidRequestedRecordPermissionNotification = @
 
 - (void)requestRecordPermission
 {
-    UIAlertView *a = [[UIAlertView alloc] initWithTitle:@"授权提示"
-                                                message:@"你需要授权该 APP 获取音频权限才能录音。"
-                                               delegate:self
-                                      cancelButtonTitle:@"好的，我知道了"
-                                      otherButtonTitles:nil, nil];
-    [a show];
+    switch ([AVAudioSession sharedInstance].recordPermission) {
+        case AVAudioSessionRecordPermissionUndetermined: {
+            // 第一次运行 APP，待定状态
+            UIAlertView *a = [[UIAlertView alloc] initWithTitle:@"授权提示"
+                                                        message:@"你需要授权该 APP 获取音频权限才能录音。"
+                                                       delegate:self
+                                              cancelButtonTitle:@"好的，我知道了"
+                                              otherButtonTitles:nil, nil];
+            [a show];
+            break;
+        }
+
+        case AVAudioSessionRecordPermissionDenied:
+            // 被拒绝过了
+            [self.permissionDelegate didRequestedRecordPermission:NO];
+            break;
+            
+        case AVAudioSessionRecordPermissionGranted: {
+            // 已经被允许
+            [self.permissionDelegate didRequestedRecordPermission:YES];
+            break;
+        }
+            
+        default:
+            break;
+    }
 }
 
 - (void)startRecord
@@ -224,28 +240,28 @@ NSString * const Demo1AVAudioSessionDidRequestedRecordPermissionNotification = @
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    switch ([AVAudioSession sharedInstance].recordPermission) {
-        case AVAudioSessionRecordPermissionUndetermined:
-            // 第一次运行 APP，待定状态
-            [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:Demo1AVAudioSessionDidRequestedRecordPermissionNotification
-                                                                    object:nil
-                                                                  userInfo:@{@"Granted":(granted ? @YES : @NO)}];
-            }];
-            break;
-        case AVAudioSessionRecordPermissionDenied:
-            // 被拒绝过了
-            [[NSNotificationCenter defaultCenter] postNotificationName:Demo1AVAudioSessionDidRequestedRecordPermissionNotification
-                                                                object:nil
-                                                              userInfo:@{@"Granted":@NO}];
-            break;
-        case AVAudioSessionRecordPermissionGranted: {
-            // 已经被允许
-            break;
-        }
-            
-        default:
-            break;
+    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+        [self.permissionDelegate didRequestedRecordPermission:granted];
+    }];
+}
+
+#pragma mark - AVAudioSessionRequestRecordPermissionDelegate
+- (void)didRequestedRecordPermission:(BOOL)result
+{
+    if (result) {
+        // Granted
+        NSLog(@"Granted");
+        [self startRecord];
+    }
+    else {
+        // Denied
+        NSLog(@"Denied");
+        UIAlertView *a = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"没有录音权限，去设置里开启。"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"取消"
+                                          otherButtonTitles: nil, nil];
+        [a show];   // 这个提示框可能要等几秒钟才出来，原因不详。
     }
 }
 
@@ -255,4 +271,3 @@ NSString * const Demo1AVAudioSessionDidRequestedRecordPermissionNotification = @
 
 
 ![](/{{path}}2.gif)
-
