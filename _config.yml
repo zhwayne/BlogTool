@@ -5,10 +5,15 @@
 # Site
 title: Wayne's tecblog
 subtitle:
-description:
-author: Wayne Zhang
+description: Hexo theme - Icarus
+author: Wayne
+author_title: 'iOS Developer & Other'
+avatar: css/images/avatar.png
+location: 'Hangzhou, China'
+follow: https://github.com/zhwayne/
 language: zh-CN
 timezone:
+since: 2000 # The start year showing in your copyright section.
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -22,7 +27,6 @@ source_dir: source
 public_dir: public
 tag_dir: tags
 archive_dir: archives
-about_dir: about
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
@@ -59,13 +63,20 @@ time_format: HH:mm:ss
 
 # Pagination
 ## Set per_page to 0 to disable pagination
-per_page: 10
+per_page: 7
 pagination_dir: page
 
 # Extensions
-## Plugins: http://hexo.io/plugins/
-## Themes: http://hexo.io/themes/
-theme: jacman
+## Plugins: https://github.com/hexojs/hexo/wiki/Plugins
+## Themes: https://github.com/hexojs/hexo/wiki/Themes
+theme: icarus
+
+# Disqus
+# disqus_shortname: 
+
+# DuoShuo
+duoshuo_shortname: zhwaynetecblog
+
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
@@ -73,4 +84,3 @@ deploy:
   type: git
   repo: git@github.com:zhwayne/blog.git
   branch: gh-pages
-

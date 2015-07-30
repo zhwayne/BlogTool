@@ -2,8 +2,6 @@ title: Audio Session 编程指南(一)
 
 date: 2015-07-22 13:17:37
 
-toc: false
-
 categories:
 
 - iOS
@@ -13,6 +11,7 @@ tags:
 - Audio
 
 ------
+
 
 iOS为我们的 APP 提供了一系列的方式去播放音频，常见的音频相关框架有 AVPlayer，AVAudioPlayer，AVAudioRecorder，AudioQueue 以及 Audio Unit。另外还有一个和音视频联系非常紧密的一个东西，就是 Audio Session。这个类本身并不参与控制音频的播放，它作为 iOS 设备播放音频策略的一个辅助工具并提供了以下几个主要功能：
 
@@ -44,11 +43,9 @@ iOS 为每一个应用程序提供了一个 Audio Session，每个 Audio Session
 
 应用程序在启动时，iOS 为其提供一个应用内的全局 Session，在默认情况下，系统会自动激活这个 Session，但是苹果推荐我们明确显式地激活它。
 
-``` objc
-NSError *activationError = nil;
-BOOL success = [[AVAudioSession sharedInstance] setActive: YES error:&activationError];
-if (!success) { /* handle the error in activationError */ }
-```
+    NSError *activationError = nil;
+    BOOL success = [[AVAudioSession sharedInstance] setActive: YES error:&activationError];
+    if (!success) { /* handle the error in activationError */ }
 
 为什么需要激活？
 
