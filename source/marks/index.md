@@ -10,6 +10,7 @@ toc: true
 
 ## Tools
 - [百度网盘搜索](http://so.baiduyun.me)
+- [WOW搜索](http://wow.com)
 
 ## Blog & Site
 
