@@ -28,8 +28,10 @@ toc: true
 - [Swift tips](http://swifter.tips/)
 - [Sam_Lau](http://www.jianshu.com/users/256fb15baf75/latest_articles)
 - [董铂然](http://www.cnblogs.com/dsxniubility/)
+- [雷纯锋的技术博客](http://blog.leichunfeng.com/blog/archives/)
 
 ## Datum
 - [iOS 面试集合](https://github.com/icepy/iOS-usefulinformation-zh_CN/tree/master/iOS-usefulInterviewquestions-zh_CN)
 - [iOS-usefulinformation-zh_CN](https://github.com/icepy/iOS-usefulinformation-zh_CN)
 - [iOS自动布局高级用法及纯手码约束写法](http://www.cnblogs.com/dsxniubility/p/4266581.html)
+- [iOS 并发编程之 Operation Queues](http://blog.leichunfeng.com/blog/2015/07/29/ios-concurrency-programming-operation-queues/#jtss-tsina)
