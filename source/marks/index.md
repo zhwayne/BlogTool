@@ -14,6 +14,7 @@ toc: true
 
 ## Blog & Site
 
+- [Swift 2.0 中文版](http://wiki.jikexueyuan.com/project/swift/)
 - [里脊串的开发随笔](http://adad184.com/)
 - [AppCoda](http://www.appcoda.com)
 - [objc中文](http://objcio.cn)
