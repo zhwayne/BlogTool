@@ -38,4 +38,5 @@ toc: true
 - [iOS-usefulinformation-zh_CN](https://github.com/icepy/iOS-usefulinformation-zh_CN)
 - [iOS自动布局高级用法及纯手码约束写法](http://www.cnblogs.com/dsxniubility/p/4266581.html)
 - [iOS 并发编程之 Operation Queues](http://blog.leichunfeng.com/blog/2015/07/29/ios-concurrency-programming-operation-queues/#jtss-tsina)
+- [Advanced NSOperations](http://limboy.me/ios/2015/08/08/advanced-nsoperations.html)
 - [自定义转场动画](http://www.cocoachina.com/ios/20150718/12600.html#0-tsina-1-60676-397232819ff9a47a7b7e80a40613cfe1)
