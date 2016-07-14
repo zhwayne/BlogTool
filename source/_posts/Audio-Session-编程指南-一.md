@@ -133,9 +133,6 @@ APP 的音频共存行为先说到这里，本文并不作为官方文档的中�
 
 从 iOS 7 开始，我们的 APP 需要录音必须获得用户的授权。如果程序中开始了录音，系统会自动提示用户是否需要授权。
 
-
-
-{% asset_img 1.png  This is an example image [] %}
 ![](/{{path}}1.png)
 
 出现这个提示后，录音会被暂时阻塞，直到用户确认授权。如果点击了不允许，以后只能在设置里重新手动授权。这样用户没有一点心里准备，你应该在授权之前告知用户授权的目的，很显然我们不能修改系统的这个提示框，我们需要自己掌控系统何时会弹出这个授权提示框，用`requestRecordPermission:`方法可以帮我们实现，这里有一个很简单的 Demo。
@@ -272,3 +269,5 @@ AVAudioSessionRequestRecordPermissionDelegate
 
 
 ![](/{{path}}2.gif)
+
+
